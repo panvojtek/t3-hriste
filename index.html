@@ -112,9 +112,29 @@
         }
       }
 
-      window.addEventListener('resize', resize);
-      resize();
-      setInterval(draw, 50);
+      var timer = null;
+      var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      function start() {
+        if (timer !== null) return;
+        resize();
+        timer = setInterval(draw, 50);
+      }
+
+      function stop() {
+        if (timer === null) return;
+        clearInterval(timer);
+        timer = null;
+      }
+
+      function applyMotionPreference() {
+        if (motionQuery.matches) stop(); else start();
+      }
+
+      window.addEventListener('resize', function () { if (timer !== null) resize(); });
+      if (motionQuery.addEventListener) motionQuery.addEventListener('change', applyMotionPreference);
+      else motionQuery.addListener(applyMotionPreference);
+      applyMotionPreference();
     })();
   </script>
 </body>
