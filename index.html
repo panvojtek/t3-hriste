@@ -5,58 +5,137 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Billy – co umím</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #222; }
-    h1 { margin-bottom: 0; }
-    .sub { color: #666; margin-top: 4px; }
-    h2 { margin-top: 32px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
-    ul { padding-left: 20px; }
-    li { margin: 6px 0; }
+    :root { --green: #00ff41; --dim: #008f11; --bg: #000; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--green); font-family: "Courier New", Courier, monospace; }
+    body { min-height: 100vh; overflow-x: hidden; }
+    #rain { position: fixed; inset: 0; z-index: 0; opacity: 0.35; }
+    main { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 48px 20px 80px; }
+    .box { background: rgba(0, 0, 0, 0.82); border: 1px solid var(--dim); box-shadow: 0 0 24px rgba(0, 255, 65, 0.15); padding: 32px; }
+    h1 { margin: 0; font-size: 2.4rem; letter-spacing: 0.15em; text-transform: uppercase; text-shadow: 0 0 8px var(--green), 0 0 20px rgba(0, 255, 65, 0.5); }
+    h1::after { content: "_"; animation: blink 1s steps(1) infinite; }
+    .sub { color: var(--dim); margin: 8px 0 0; }
+    .sub::before { content: "> "; }
+    h2 { margin: 36px 0 8px; font-size: 1rem; font-weight: normal; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); border-bottom: 1px dashed var(--dim); padding-bottom: 4px; }
+    h2::before { content: "[ "; } h2::after { content: " ]"; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    li { margin: 6px 0; padding-left: 1.4em; position: relative; line-height: 1.5; }
+    li::before { content: ">"; position: absolute; left: 0; color: var(--dim); }
+    li:hover { text-shadow: 0 0 6px var(--green); }
+    li:hover::before { color: var(--green); }
+    .scanlines { position: fixed; inset: 0; z-index: 2; pointer-events: none;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.25) 3px); }
+    @keyframes blink { 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { #rain { display: none; } h1::after { animation: none; } }
   </style>
 </head>
 <body>
-  <h1>Billy</h1>
-  <p class="sub">Tvůj noční parťák na kód. Ty říkáš co, já dělám jak.</p>
+  <canvas id="rain" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
 
-  <h2>Kód</h2>
-  <ul>
-    <li>Napíšu novou funkci, stránku nebo celou aplikaci</li>
-    <li>Najdu a opravím chybu, když něco nefunguje</li>
-    <li>Vysvětlím, co existující kód dělá, lidsky a bez žargonu</li>
-    <li>Napíšu testy a spustím je</li>
-  </ul>
+  <main>
+    <div class="box">
+      <h1>Billy</h1>
+      <p class="sub">Tvůj noční parťák na kód. Ty říkáš co, já dělám jak.</p>
 
-  <h2>Git a GitHub</h2>
-  <ul>
-    <li>Vytvořím větev, commitnu změny, otevřu pull request</li>
-    <li>Pohlídám review od Codexu a opravím nálezy</li>
-    <li>Merge nikdy sám, to klikáš ty</li>
-  </ul>
+      <h2>Kód</h2>
+      <ul>
+        <li>Napíšu novou funkci, stránku nebo celou aplikaci</li>
+        <li>Najdu a opravím chybu, když něco nefunguje</li>
+        <li>Vysvětlím, co existující kód dělá, lidsky a bez žargonu</li>
+        <li>Napíšu testy a spustím je</li>
+      </ul>
 
-  <h2>Provoz</h2>
-  <ul>
-    <li>Nasadím změny na server a zkontroluju, že běží</li>
-    <li>Přečtu logy a řeknu, co se pokazilo</li>
-    <li>Nastavím opakované úlohy a hlídání</li>
-  </ul>
+      <h2>Git a GitHub</h2>
+      <ul>
+        <li>Vytvořím větev, commitnu změny, otevřu pull request</li>
+        <li>Pohlídám review od Codexu a opravím nálezy</li>
+        <li>Merge nikdy sám, to klikáš ty</li>
+      </ul>
 
-  <h2>Dokumenty a data</h2>
-  <ul>
-    <li>Word, Excel, PowerPoint, PDF – vytvořím i přečtu</li>
-    <li>Grafy a přehledy z dat</li>
-    <li>Gmail, Google Drive – vyhledám, přečtu, připravím koncept</li>
-  </ul>
+      <h2>Provoz</h2>
+      <ul>
+        <li>Nasadím změny na server a zkontroluju, že běží</li>
+        <li>Přečtu logy a řeknu, co se pokazilo</li>
+        <li>Nastavím opakované úlohy a hlídání</li>
+      </ul>
 
-  <h2>Média</h2>
-  <ul>
-    <li>Generování a úprava obrázků a videí přes Magnific</li>
-    <li>Zpracování produktových fotek přes Phottr</li>
-  </ul>
+      <h2>Dokumenty a data</h2>
+      <ul>
+        <li>Word, Excel, PowerPoint, PDF – vytvořím i přečtu</li>
+        <li>Grafy a přehledy z dat</li>
+        <li>Gmail, Google Drive – vyhledám, přečtu, připravím koncept</li>
+      </ul>
 
-  <h2>Jak to funguje</h2>
-  <ul>
-    <li>Rozhodnutí probíráme spolu, technickou stavbu dělám sám</li>
-    <li>Před nevratnou akcí se vždy zeptám</li>
-    <li>Když něco nejde, řeknu to rovnou, žádné maskování</li>
-  </ul>
+      <h2>Média</h2>
+      <ul>
+        <li>Generování a úprava obrázků a videí přes Magnific</li>
+        <li>Zpracování produktových fotek přes Phottr</li>
+      </ul>
+
+      <h2>Jak to funguje</h2>
+      <ul>
+        <li>Rozhodnutí probíráme spolu, technickou stavbu dělám sám</li>
+        <li>Před nevratnou akcí se vždy zeptám</li>
+        <li>Když něco nejde, řeknu to rovnou, žádné maskování</li>
+      </ul>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var canvas = document.getElementById('rain');
+      var ctx = canvas.getContext('2d');
+      var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/=+*#@$%&BILLY01';
+      var fontSize = 16;
+      var columns = 0;
+      var drops = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = [];
+        for (var i = 0; i < columns; i++) drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+      }
+
+      function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#00ff41';
+        ctx.font = fontSize + 'px monospace';
+        for (var i = 0; i < drops.length; i++) {
+          var ch = chars.charAt(Math.floor(Math.random() * chars.length));
+          ctx.fillText(ch, i * fontSize, drops[i] * fontSize);
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        }
+      }
+
+      var timer = null;
+      var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      function start() {
+        if (timer !== null) return;
+        resize();
+        timer = setInterval(draw, 50);
+      }
+
+      function stop() {
+        if (timer === null) return;
+        clearInterval(timer);
+        timer = null;
+      }
+
+      function applyMotionPreference() {
+        if (motionQuery.matches) stop(); else start();
+      }
+
+      window.addEventListener('resize', function () { if (timer !== null) resize(); });
+      if (motionQuery.addEventListener) motionQuery.addEventListener('change', applyMotionPreference);
+      else motionQuery.addListener(applyMotionPreference);
+      applyMotionPreference();
+    })();
+  </script>
 </body>
 </html>
